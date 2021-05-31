@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DBConnection {
-    private static String user = "postgres";
-    private static String pwd = "Password123";
-    private static String host = "jdbc:postgresql://localhost:";
-    private static String port = "5433";
-
+    private String user = "postgres";
+    private String pwd = "Password123";
+    private String host = "jdbc:postgresql://localhost:";
+    private String port = "5433";
+    private String databse = "/drinks";
 
     public Connection getConnection() {
         Connection connection = null;
@@ -24,7 +24,7 @@ public class DBConnection {
             // Load driver for PostgreSQL
             Class.forName("org.postgresql.Driver");
             // Create a connection to the database
-            connection = DriverManager.getConnection(host + port + "/cocktails", "postgres", pwd);
+            connection = DriverManager.getConnection(host + port + databse, user, pwd);
 
             if (connection != null) {
                 //System.out.println("Connection successful!");
