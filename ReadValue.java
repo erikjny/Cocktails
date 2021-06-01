@@ -51,32 +51,52 @@ public class ReadValue{
 		try {
 			Class.forName("org.postgresql.Driver");
 
-            query = "SELECT cnavn, inavn, mengde, menavn, beskrivelse FROM oppskrift " +
-													"NATURAL JOIN cocktails " +
-													"NATURAL JOIN ingredienser " +
-													"NATURAL JOIN maaleenhet";
+			query = "SELECT cnavn, inavn, mengde || menavn mengde, pnavn, beskrivelse FROM oppskrift " +
+			"natural join cocktails " +
+			"natural join ingredienser  " +
+			"natural join maaleenhet " +
+			"left outer join anbefaling " +
+			"natural join produkt ON anbefaling.iid = oppskrift.iid AND anbefaling.cid = oppskrift.cid " +
+			"ORDER BY cnavn DESC";
+
 
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
 
-			String curr = "";
+			String cu = "0";
+			String ne = "1";
+			String curr = "0";
 			String next = "1";
-			while (rs.next()){
 
+			while (rs.next()){
 				next = rs.getString(1);
+				ne = rs.getString(2);
+
+				// --- Printer bare navnet paa drinken én gang
 				if (!curr.equals(next)){
 					System.out.println("\n==== " + rs.getString(1) + "====");
 					System.out.println(rs.getString(5) + "\n");
 				}
-                System.out.print(rs.getString(2));
-                System.out.print(" | " + rs.getString(3));
-                System.out.println(rs.getString(4));
 
+				// --- Printer bare navnet paa ingrediensen én gang
+				if(!cu.equals(ne)){
+					System.out.print(rs.getString(2)+  " ");
+					System.out.print(rs.getString(3));
+					if (rs.getString(4) != null){
+						System.out.print(" | " + rs.getString(4));
+					} else{
+						System.out.println("");
+					}
+				} else{
+
+						System.out.println(" / " + rs.getString(4));
+				}
+
+				cu  = ne;
 				curr = next;
 			}
 		}catch(SQLException|ClassNotFoundException ex){
             System.err.println("Error encountered: " + ex.getMessage());
 		}
 	}
-
 }
