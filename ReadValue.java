@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ReadValue{
     private String query;
     private Statement statement;
-    private PreparedStatement pst;
+    private PreparedStatement ps;
     private ResultSet rs;
 	private DBConnection dbc = new DBConnection();
 	private Connection connection = dbc.getConnection();
@@ -47,19 +47,68 @@ public class ReadValue{
 		}
 	}
 
+	public void hentOppskrift(String navn) throws SQLException {
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			query = "SELECT inavn, mengde, pnavn, beskrivelse FROM oppskrift_view WHERE cnavn = ?";
+			ps = connection.prepareStatement(query);
+			ps.setString(1, navn);
+			ResultSet rs = ps.executeQuery();
+
+			System.out.format("\n%20s\n", navn);
+
+			String cu = "0";
+			String ne = "1";
+			while (rs.next()){
+				ne = rs.getString(1);
+				// --- Printer bare navnet paa ingrediensen én gang
+				if(!cu.equals(ne)){
+					System.out.format("%15s%10s", rs.getString(1), rs.getString(2));
+					if (rs.getString(3) != null){
+						System.out.print(" | " + rs.getString(3));
+					} else{
+						System.out.println("");
+					}
+				} else{
+					System.out.println(" / " + rs.getString(3));
+				}
+				cu  = ne;
+				if (rs.isLast()){
+					System.out.println("\n");
+					System.out.println(rs.getString(4));
+				}
+			}
+		} catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+		} finally {
+			ps.close();
+		}
+	}
+
 	public void hentAlleOppskrifter(){
 		try {
 			Class.forName("org.postgresql.Driver");
 
-			query = "SELECT cnavn, inavn, mengde || menavn mengde, pnavn, beskrivelse FROM oppskrift " +
-			"natural join cocktails " +
-			"natural join ingredienser  " +
-			"natural join maaleenhet " +
-			"left outer join anbefaling " +
-			"natural join produkt ON anbefaling.iid = oppskrift.iid AND anbefaling.cid = oppskrift.cid " +
-			"ORDER BY cnavn DESC";
+			DBConnection dbc2 = new DBConnection();
+			Connection connection2 = dbc2.getConnection();
 
+			query = "SELECT DISTINCT cnavn FROM oppskrift_view";
+            statement = connection2.createStatement();
+            rs = statement.executeQuery(query);
 
+			while (rs.next()){
+				hentOppskrift(rs.getString(1));
+			}
+		}catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+		}
+	}
+	public void hentAlleOppskrifter2(){
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			query = "SELECT * FROM oppskrift_view";
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
 
@@ -74,21 +123,20 @@ public class ReadValue{
 
 				// --- Printer bare navnet paa drinken én gang
 				if (!curr.equals(next)){
-					System.out.println("\n==== " + rs.getString(1) + "====");
-					System.out.println(rs.getString(5) + "\n");
+					System.out.format("\n%43s", rs.getString(1));
+					System.out.format("\n%20s", rs.getString(5));
+					System.out.println("");
 				}
 
 				// --- Printer bare navnet paa ingrediensen én gang
 				if(!cu.equals(ne)){
-					System.out.print(rs.getString(2)+  " ");
-					System.out.print(rs.getString(3));
+					System.out.format("%32s%16s", rs.getString(2), rs.getString(3));
 					if (rs.getString(4) != null){
 						System.out.print(" | " + rs.getString(4));
 					} else{
 						System.out.println("");
 					}
 				} else{
-
 						System.out.println(" / " + rs.getString(4));
 				}
 
