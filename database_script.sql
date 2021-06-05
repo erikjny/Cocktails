@@ -5,24 +5,29 @@ CREATE TABLE IF NOT EXISTS produkt (pid SERIAL PRIMARY KEY, pnavn VARCHAR(255) U
 CREATE TABLE IF NOT EXISTS ingredienstype (itid	SERIAL PRIMARY KEY, itnavn VARCHAR(255) UNIQUE NOT NULL);
 CREATE TABLE IF NOT EXISTS maaleenhet (meid	SERIAL PRIMARY KEY, menavn VARCHAR(255) UNIQUE NOT NULL);
 CREATE TABLE IF NOT EXISTS ingredienser (iid SERIAL PRIMARY KEY, inavn VARCHAR(255) UNIQUE NOT NULL,
-											itid int REFERENCES ingredienstype(itid));
-CREATE TABLE IF NOT EXISTS anbefaling (cid int REFERENCES cocktails(cid), iid int REFERENCES ingredienser(iid),
-											pid int REFERENCES produkt(pid));
-CREATE TABLE IF NOT EXISTS oppskrift (cid int REFERENCES cocktails(cid), iid int REFERENCES ingredienser(iid),
-											mengde VARCHAR(255) NOT NULL, meid int REFERENCES maaleenhet(meid));
+											itid int REFERENCES ingredienstype(itid) NOT NULL);
+
+CREATE TABLE IF NOT EXISTS anbefaling (cid int REFERENCES cocktails(cid) NOT NULL,
+									   iid int REFERENCES ingredienser(iid) NOT NULL,
+									   pid int REFERENCES produkt(pid) NOT NULL);
+
+CREATE TABLE IF NOT EXISTS oppskrift (cid int REFERENCES cocktails(cid) NOT NULL,
+									  iid int REFERENCES ingredienser(iid) NOT NULL,
+									  mengde VARCHAR(255) NOT NULL,
+									  meid int REFERENCES maaleenhet(meid) NOT NULL);
 
 
 -- ================== LEGG TIL VIEWS ========================
-CREATE VIEW oppskrift_view (cnavn, inavn, mengde, pnavn, beskrivelse)
-AS
-SELECT cnavn, inavn, mengde || menavn mengde, pnavn, beskrivelse
-FROM oppskrift
-natural join cocktails
-natural join ingredienser
-natural join maaleenhet
-left outer join anbefaling
-natural join produkt ON anbefaling.iid = oppskrift.iid AND anbefaling.cid = oppskrift.cid
-ORDER BY cnavn DESC;
+CREATE or REPLACE VIEW oppskrift_view (cnavn, inavn, mengde, pnavn, beskrivelse)
+	AS
+	SELECT cnavn, inavn, mengde || menavn mengde, pnavn, beskrivelse
+		FROM oppskrift
+			natural join cocktails
+			natural join ingredienser
+			natural join maaleenhet
+			left outer join anbefaling
+			natural join produkt ON anbefaling.iid = oppskrift.iid AND anbefaling.cid = oppskrift.cid
+		ORDER BY cnavn DESC;
 
 -- ================== INSERT VERDIER ========================
 
@@ -33,22 +38,23 @@ ORDER BY cnavn DESC;
 -- INSERT INTO ingredienstype (itnavn) VALUES ('sirup');
 -- INSERT INTO ingredienstype (itnavn) VALUES ('grønnsak');
 
+
 -- INGREDIENS
--- INSERT INTO ingredienser (inavn, itid) VALUES('vodka', 1);
--- INSERT INTO ingredienser (inavn, itid) VALUES('kaffelikør', 2);
--- INSERT INTO ingredienser (inavn, itid) VALUES('fløte', 3);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('rom', 1);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('curaçao', 2);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('dry curaçao', 2);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('orgeat', 7);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('demerara rum', 1);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('jamaican rum', 1);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('dark rum', 1);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('lime', 8);
--- INSERT INTO ingredienser (inavn, itid) VALUES ('sukkerlake', 7);
+-- INSERT INTO ingredienser (inavn, itid) VALUES('vodka', (SELECT itid FROM ingredienstype WHERE itnavn = 'sprit'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES('kaffelikør', (SELECT itid FROM ingredienstype WHERE itnavn = 'likør'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES('fløte', (SELECT itid FROM ingredienstype WHERE itnavn = 'meieriprodukt'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('rom', (SELECT itid FROM ingredienstype WHERE itnavn = 'sprit'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('curaçao', (SELECT itid FROM ingredienstype WHERE itnavn = 'likør'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('dry curaçao', (SELECT itid FROM ingredienstype WHERE itnavn = 'likør'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('orgeat', (SELECT itid FROM ingredienstype WHERE itnavn = 'sirup'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('demerara rum', (SELECT itid FROM ingredienstype WHERE itnavn = 'sprit'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('jamaican rum', (SELECT itid FROM ingredienstype WHERE itnavn = 'sprit'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('dark rum', (SELECT itid FROM ingredienstype WHERE itnavn = 'sprit'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('lime', (SELECT itid FROM ingredienstype WHERE itnavn = 'grønnsak'));
+-- INSERT INTO ingredienser (inavn, itid) VALUES ('sukkerlake', (SELECT itid FROM ingredienstype WHERE itnavn = 'sirup'));
 
 -- PRODUKT
--- INSERT INTO produkt (capnavn) VALUES ('kahlúa');
+-- INSERT INTO produkt (pnavn) VALUES ('kahlúa');
 -- INSERT INTO produkt (pnavn) VALUES ('tia maria');
 
 -- COCKTAILS
@@ -65,17 +71,23 @@ ORDER BY cnavn DESC;
 -- INSERT INTO anbefaling (cid, iid, pid) VALUES(1, 2, 2);
 
 -- OPPSKRIFT
+
+-- WHITE RUSSIAN
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(1, 1, 60, 1);
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(1, 2, 30, 1);
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(1, 3, 30, 1);
 
+-- BLACK RUSSIAN
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(2, 1, 60, 1);
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(2, 2, 30, 1);
+
 -- MAI TAI
--- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 12, 30, 1);
--- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 11, 15, 1);
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 8, 30, 1);
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 9, 15, 1);
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 10, 15, 1);
--- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 13, 30, 1);
--- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 9, 22, 1);
--- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 15, 8, 1);
--- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 14, 15, 1);
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 11, 30, 1);
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 7, 22, 1);
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 12, 8, 1);
+-- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 6, 15, 1);
 
 COMMIT;

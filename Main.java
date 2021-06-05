@@ -12,10 +12,13 @@ public class Main{
     public static PreparedStatement pst;
     public static ResultSet rs;
 	public static ReadValue rv = new ReadValue();
+	public static WriteValue wv = new WriteValue();
 
 	public static void main(String[] args){
 
-		rv.hentAlleOppskrifter();
+
+		wv.leggTilIngrediens("angostura orange bitters", "bitter");
+		//rv.hentAlleOppskrifter();
 		//alleDrinks();
 		//alleIngredienser();
 	}
