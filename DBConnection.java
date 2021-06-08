@@ -15,7 +15,7 @@ public class DBConnection {
     private String pwd = "Password123";
     private String host = "jdbc:postgresql://localhost:";
     private String port = "5433";
-    private String databse = "/drinks";
+    private String databse = "/drinks2";
 
     public Connection getConnection() {
         Connection connection = null;

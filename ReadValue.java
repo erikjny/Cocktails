@@ -56,7 +56,8 @@ public class ReadValue{
 			ps.setString(1, navn);
 			ResultSet rs = ps.executeQuery();
 
-			System.out.format("\n%20s\n", navn);
+			System.out.println("__________________________________________");
+			System.out.format("\n%23s\n", navn);
 
 			String cu = "0";
 			String ne = "1";
@@ -64,14 +65,12 @@ public class ReadValue{
 				ne = rs.getString(1);
 				// --- Printer bare navnet paa ingrediensen én gang
 				if(!cu.equals(ne)){
-					System.out.format("%15s%10s", rs.getString(1), rs.getString(2));
+					System.out.format("\n%15s%10s", rs.getString(1), rs.getString(2));
 					if (rs.getString(3) != null){
 						System.out.print(" | " + rs.getString(3));
-					} else{
-						System.out.println("");
 					}
 				} else{
-					System.out.println(" / " + rs.getString(3));
+					System.out.print(" / " + rs.getString(3));
 				}
 				cu  = ne;
 				if (rs.isLast()){
@@ -100,6 +99,125 @@ public class ReadValue{
 			while (rs.next()){
 				hentOppskrift(rs.getString(1));
 			}
+		}catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+		}
+	}
+
+	// <<<< --------- SJEKK OM VERDIER FINNES --------- >>>>
+
+	public boolean drinkFinnes(String drink){
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			query = "SELECT 1 FROM cocktails WHERE cnavn = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+			ps.setString(1, drink);
+            rs = ps.executeQuery();
+
+			return rs.next();
+		}catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+			return false;
+		}
+	}
+
+	public boolean maaleenhetFinnes(String maaleenhet){
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			query = "SELECT 1 FROM maaleenhet WHERE menavn = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+			ps.setString(1, maaleenhet);
+            rs = ps.executeQuery();
+
+			return rs.next();
+		}catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+			return false;
+		}
+	}
+
+	public boolean ingredienstypeFinnes(String ingredienstype){
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			query = "SELECT 1 FROM ingredienstype WHERE itnavn = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+			ps.setString(1, ingredienstype);
+            rs = ps.executeQuery();
+
+			return rs.next();
+		}catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+			return false;
+		}
+	}
+
+	public boolean produktFinnes(String produkt){
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			query = "SELECT 1 FROM produkt WHERE pnavn = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+			ps.setString(1, produkt);
+            rs = ps.executeQuery();
+
+			return rs.next();
+		}catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+			return false;
+		}
+	}
+
+	public boolean ingrediensFinnes(String ingrediens){
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			query = "SELECT 1 FROM ingredienser WHERE inavn = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+			ps.setString(1, ingrediens);
+            rs = ps.executeQuery();
+
+			return rs.next();
+		}catch(SQLException|ClassNotFoundException ex){
+            System.err.println("Error encountered: " + ex.getMessage());
+			return false;
+		}
+	}
+
+	public void drinkFraIngredienser(ArrayList<String> ingredienser){
+		try {
+			Class.forName("org.postgresql.Driver");
+
+			DBConnection dbc2 = new DBConnection();
+			Connection con = dbc2.getConnection();
+
+			String query = "select cnavn from cocktails c " +
+					"WHERE NOT EXISTS (select 1 from oppskrift o " +
+                    "WHERE o.cid = c.cid " +
+                      " and o.iid not in (";
+
+			for(int i = 0; i < ingredienser.size(); i++){
+				query += "(SELECT iid FROM ingredienser WHERE inavn = '" + ingredienser.get(i) + "')";
+				if (i < ingredienser.size()-1){
+					query += ", ";
+				}
+			}
+
+			query += "))";
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(query);
+
+			while(rs.next()){
+				hentOppskrift(rs.getString(1));
+			}
+
 		}catch(SQLException|ClassNotFoundException ex){
             System.err.println("Error encountered: " + ex.getMessage());
 		}
