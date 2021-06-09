@@ -1,5 +1,4 @@
 # Cocktails med ho SARA <3
-vess ho vil
 Dette er et program om cocktails
 
 ## Innhold
