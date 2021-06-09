@@ -229,21 +229,18 @@ public class ReadValue{
 
 			DBConnection dbc2 = new DBConnection();
 			Connection con = dbc2.getConnection();
-
 			String query = "SELECT cnavn FROM cocktails c " +
 							"natural join oppskrift " +
 							"WHERE iid IN (";
 
-
+			// Legger til ingrediensene i spørringen
 			for(int i = 0; i < ingredienser.size(); i++){
 				query += "(SELECT iid FROM ingredienser WHERE inavn = '" + ingredienser.get(i) + "')";
 				if (i < ingredienser.size()-1){
 					query += ", ";
 				}
 			}
-
 			query += ") ";
-
 			query   += 	"GROUP BY cnavn " +
 							"HAVING count(*) " +
 							"= (SELECT count(*)-1 FROM oppskrift " +
