@@ -63,6 +63,12 @@ public class Main{
 				return;
 			} else if (in.equals("f")){
 				rv.drinkFraIngredienser(ingredienser);
+				System.out.println("\n ER BUTIKKEN FORTSATT ÅPEN?\n");
+				System.out.println("\n DISSE MANGLER DU BARE 1 INGREDIENS TIL!\n");
+				rv.enManglende(ingredienser);
+				return;
+			} else if (!rv.ingrediensFinnes(in)){
+				System.out.println("\nDenne ingrediensen finnes ikke!\n");
 				return;
 			}
 			ingredienser.add(in);
