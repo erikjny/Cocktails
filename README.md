@@ -1,4 +1,4 @@
-# Cocktails med SARA <3
+# Cocktails uten SARA <3
 Dette er et program om cocktails
 
 ## Innhold
