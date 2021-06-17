@@ -12,41 +12,6 @@ public class ReadValue{
 	private DBConnection dbc = new DBConnection();
 	private Connection connection = dbc.getConnection();
 
-	public void hentAlleDrinks(){
-		try {
-			Class.forName("org.postgresql.Driver");
-
-            query = "Select * From cocktails";
-            statement = connection.createStatement();
-            rs = statement.executeQuery(query);
-
-			while (rs.next()){
-                System.out.print("sid: " + rs.getString(1) + "	");
-                System.out.println("name: " + rs.getString(2));
-                System.out.println("	" + rs.getString(3) + "\n");
-			}
-		}catch(SQLException|ClassNotFoundException ex){
-            System.err.println("Error encountered: " + ex.getMessage());
-		}
-	}
-
-	public void hentAlleIngredienser(){
-		try {
-			Class.forName("org.postgresql.Driver");
-
-            query = "Select inavn, itnavn FROM ingredienser NATURAL JOIN ingredienstype";
-            statement = connection.createStatement();
-            rs = statement.executeQuery(query);
-
-			while (rs.next()){
-                System.out.print("" + rs.getString(1) + "	");
-                System.out.println("| " + rs.getString(2));
-			}
-		}catch(SQLException|ClassNotFoundException ex){
-            System.err.println("Error encountered: " + ex.getMessage());
-		}
-	}
-
 	public void hentOppskrift(String navn) throws SQLException {
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -191,7 +156,7 @@ public class ReadValue{
 		}
 	}
 
-	public void drinkFraIngredienser(ArrayList<String> ingredienser){
+	public boolean drinkFraIngredienser(ArrayList<String> ingredienser){
 		try {
 			Class.forName("org.postgresql.Driver");
 
@@ -214,16 +179,22 @@ public class ReadValue{
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery(query);
 
-			while(rs.next()){
-				hentOppskrift(rs.getString(1));
-			}
 
+			if (!rs.next()){
+				return false;
+			}
+			do {
+
+				hentOppskrift(rs.getString(1));
+			}while(rs.next());
+			return true;
 		}catch(SQLException|ClassNotFoundException ex){
             System.err.println("Error encountered: " + ex.getMessage());
+			return false;
 		}
 	}
 
-	public void enManglende(ArrayList<String> ingredienser){
+	public boolean enManglende(ArrayList<String> ingredienser){
 		try {
 			Class.forName("org.postgresql.Driver");
 
@@ -250,12 +221,19 @@ public class ReadValue{
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery(query);
 
-			while(rs.next()){
-				hentOppskrift(rs.getString(1));
+			if (!rs.next()){
+				return false;
 			}
+			System.out.println("\n ER BUTIKKEN FORTSATT ÅPEN?\n");
+			System.out.println("\n DISSE MANGLER DU BARE 1 INGREDIENS TIL!\n");
+			do {
+				hentOppskrift(rs.getString(1));
+			}while(rs.next());
+			return true;
 
 		}catch(SQLException|ClassNotFoundException ex){
             System.err.println("Error encountered: " + ex.getMessage());
+			return false;
 		}
 	}
 }
