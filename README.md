@@ -25,7 +25,7 @@ Javac *.java && java -cp "postgresql.jar:." Main
 ```
 
 Det burde da se omentrent slik ut:
-![alt text](https://github.com/erikjny/Cocktails/img/master/image.png?raw=true)
+![alt text](https://github.com/erikjny/Cocktails/blob/master/image.png?raw=true)
 
 
 ## Innhold
