@@ -4,10 +4,10 @@ import java.sql.DriverManager;
 
 public class DBConnection {
     private String user = "eriknystad";
-    private String pwd = "Password123";
+    private String pwd = "";
     private String host = "jdbc:postgresql://localhost:";
-    private String port = "5432";
-    private String databse = "/postgres";
+    private String port = "5432/";
+    private String databse = "drinks";
 
     public Connection getConnection() {
         Connection connection = null;

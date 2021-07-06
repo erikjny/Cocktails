@@ -35,11 +35,11 @@ Her er alle filene i prosjektet
 ## Konfigurering
 Dersom du har tilkobling til database klar, må du kanskje endre disse kodelinjene i klassen `DBConnection.java`.
 ```java
-    private String user = "eriknystad";
-    private String pwd = "Password123";
-    private String host = "jdbc:postgresql://localhost:";
-    private String port = "5432";
-    private String databse = "/postgres";
+    private String user = "[ditt brukernavn]"; // f.eks "eriknystad"
+    // Dersom du er koblet på en database med et passord
+    private String pwd = "";
+    // Dersom du bruker en annen port
+    private String port = "5432/";
 ```
 
 
@@ -50,7 +50,7 @@ Du kan sette opp en tilkobling til en postgres-database på denne måten:
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-1. Installer postgres
+2. Installer postgres
 ```sh
 brew install postgresql
 brew services start postgresql

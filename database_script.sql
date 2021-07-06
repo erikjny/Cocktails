@@ -1,4 +1,8 @@
+CREATE DATABASE drinks;
+\c drinks;
 BEGIN;
+
+
 -- ================== LEGG TIL TABELLER ========================
 CREATE TABLE IF NOT EXISTS cocktails (cid SERIAL PRIMARY KEY, cnavn VARCHAR(255) UNIQUE NOT NULL, beskrivelse TEXT);
 
