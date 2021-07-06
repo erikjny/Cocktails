@@ -87,7 +87,7 @@ CREATE or REPLACE VIEW oppskrift_view (cnavn, inavn, mengde, pnavn, beskrivelse)
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(2, 1, 60, 1);
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(2, 2, 30, 1);
 
--- MAI TAI
+-- -- MAI TAI
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 8, 30, 1);
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 9, 15, 1);
 -- INSERT INTO oppskrift (cid, iid, mengde, meid) VALUES(3, 10, 15, 1);

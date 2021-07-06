@@ -12,7 +12,6 @@ public class Main{
 	}
 
 	public static void brukerGrensesnitt() throws SQLException{
-
         while (true) {
             System.out.println("\n<<< ----- HOVEDMENY ----- >>>");
             System.out.println("Hva ønsker du å gjøre?\n");

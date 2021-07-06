@@ -3,15 +3,14 @@ import java.sql.SQLException;
 import java.sql.DriverManager;
 
 public class DBConnection {
-    private String user = "postgres";
+    private String user = "eriknystad";
     private String pwd = "Password123";
     private String host = "jdbc:postgresql://localhost:";
-    private String port = "5433";
-    private String databse = "/drinks2";
+    private String port = "5432";
+    private String databse = "/postgres";
 
     public Connection getConnection() {
         Connection connection = null;
-
         try {
             // Load driver for PostgreSQL
             Class.forName("org.postgresql.Driver");
