@@ -13,7 +13,10 @@ For at programmet skal kunne kjøres krever det at følgende er på plass:
 
 ## Oppsett og kjøring
 Klon prosjektet med følgende kommando:
-- `git clone https://github.com/erikjny/Cocktails`
+```sh
+git clone https://github.com/erikjny/Cocktails
+cd Cocktails
+```
 
 Naviger inn i den klonede mappen:
 - `cd Cocktails`
