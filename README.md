@@ -1,5 +1,5 @@
 # Cocktails 
-Dette er et program om cocktails
+Dette er et program som lar deg holde styr på cocktail-oppskrifter gjennom et simpelt terminalbasert GUI.
 
 ## Funksjoner
 - Vise oversikt over cocktails
@@ -8,11 +8,11 @@ Dette er et program om cocktails
 
 ## Krav
 For at programmet skal kunne kjøres krever det at følgende er på plass:
-- Tilkobling til en database lokalt på maskinen
+- Tilkobling til en database lokalt på maskinen, (se Konfigurering).
 - Java JDK er installert
 
 ## Oppsett og kjøring
-Klon prosjektet med følgende kommando:
+Klon prosjektet og naviger inn i mappen:
 ```sh
 git clone https://github.com/erikjny/Cocktails
 cd Cocktails
@@ -31,4 +31,28 @@ Her er alle filene i prosjektet
 - `WriteValue.java`  er en klasse som endrer data i databasen.
 - `postgres.jar`  er en klasse-fil som trengs for tilkobling til databasen.
 - `database_script.sql`  er et script som opretter databasen og setter inn data.
+
+## Konfigurering
+Dersom du har tilkobling til database klar, må du kanskje endre disse kodelinjene i klassen `DBConnection.java`.
+```java
+    private String user = "eriknystad";
+    private String pwd = "Password123";
+    private String host = "jdbc:postgresql://localhost:";
+    private String port = "5432";
+    private String databse = "/postgres";
+```
+
+
+## Sette opp tilkobling til database
+Du kan sette opp en tilkobling til en postgres-database på denne måten:
+
+1. Installer brew
+```sh
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+1. Installer postgres
+```sh
+brew install postgresql
+brew services start postgresql
+```
 
