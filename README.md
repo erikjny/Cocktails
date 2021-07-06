@@ -60,7 +60,7 @@ brew update
 ### Sette opp Java
 2. Installer java SDK (om det ikke er installert)
 ```sh
-brew cask install java
+brew cask install java11
 ```
 ### Sette opp postgres
 3. Installer postgres
