@@ -56,5 +56,5 @@ brew install postgresql
 brew services start postgresql
 ```
 3. Kjør scriptet som oppretter databasen, tabeller og views og deretter setter inn litt data
-3.1 ```sh psql postgres ```
-3.2 ```sh \i database_script.sql ```
+    3.1 ```sh psql postgres ```
+    3.2 ```sh \i database_script.sql ```
