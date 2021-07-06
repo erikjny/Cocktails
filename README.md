@@ -9,7 +9,7 @@ Dette er et program som lar deg holde styr på cocktail-oppskrifter gjennom et s
 ## Krav
 For at programmet skal kunne kjøres krever det at følgende er på plass:
 - MACOS/Linux operativsystem
-- Tilkobling til en database lokalt på maskinen, (se Konfigurering) 
+- Tilkobling til en database lokalt på maskinen, (se [Konfigurering](https://github.com/erikjny/Cocktails#Konfigurering)) 
 - Java JDK er installert
 
 ## Oppsett og kjøring
