@@ -18,11 +18,10 @@ git clone https://github.com/erikjny/Cocktails
 cd Cocktails
 ```
 
-Naviger inn i den klonede mappen:
-- `cd Cocktails`
-
 Kjør programmet med denne kommandoen:
-- `Javac *.java && java -cp "postgresql.jar:." Main`
+```sh
+Javac *.java && java -cp "postgresql.jar:." Main
+```
 
 ## Innhold
 Her er alle filene i prosjektet
