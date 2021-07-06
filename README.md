@@ -24,6 +24,10 @@ Kjør programmet med denne kommandoen:
 Javac *.java && java -cp "postgresql.jar:." Main
 ```
 
+Det burde da se omentrent slik ut:
+![alt text](https://github.com/erikjny/Cocktails/img/image.png?raw=true)
+
+
 ## Innhold
 Her er alle filene i prosjektet
 - `Main.java`  inneholder Main
@@ -40,7 +44,7 @@ Dersom du har tilkobling til database klar, må du kanskje endre disse kodelinje
     // Dersom du er koblet på en database med et passord
     private String pwd = "";
     // Dersom du bruker en annen port
-    private String port = "5432/";
+    private String port = "5432";
 ```
 
 
