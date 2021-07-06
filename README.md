@@ -48,20 +48,21 @@ Dersom du har tilkobling til database klar, må du kanskje endre disse kodelinje
     private String port = "5432";
 ```
 
-
-## Sette opp tilkobling til database
 Du kan sette opp en tilkobling til en postgres-database på denne måten:
 
+### Sette opp brew
 1. Installer brew + cask
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install cask
 brew update
 ```
+### Sette opp Java
 2. Installer java SDK (om det ikke er installert)
 ```sh
 brew cask install java
 ```
+### Sette opp postgres
 3. Installer postgres
 ```sh
 brew install postgresql
