@@ -6,7 +6,7 @@ public class DBConnection {
     private String user = "eriknystad";
     private String pwd = "";
     private String host = "jdbc:postgresql://localhost:";
-    private String port = "5432/";
+    private String port = "5432";
     private String databse = "drinks";
 
     public Connection getConnection() {
@@ -15,7 +15,7 @@ public class DBConnection {
             // Load driver for PostgreSQL
             Class.forName("org.postgresql.Driver");
             // Create a connection to the database
-            connection = DriverManager.getConnection(host + port + databse, user, pwd);
+            connection = DriverManager.getConnection(host + port + "/" + databse, user, pwd);
 
             if (connection != null) {
                 //System.out.println("Connection successful!");
